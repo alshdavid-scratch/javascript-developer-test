@@ -15,16 +15,16 @@ const getArnieQuotes = async (urls) => {
   const results = []
 
   for (const url of urls) {
-    results.push(new Promise(res => setTimeout(async () => {
+    results.push((async () => {
       const {status, body} = await httpGet(url)
       // Probably want to try/catch this
       const { message } = JSON.parse(body)
       if (status >= 200 && status <= 299) {
-        res({ 'Arnie Quote': message })
+        return { 'Arnie Quote': message }
       } else {
-        res({ 'FAILURE': message })
+        return { 'FAILURE': message }
       }
-    })))
+    })())
   }
 
   return Promise.all(results)
